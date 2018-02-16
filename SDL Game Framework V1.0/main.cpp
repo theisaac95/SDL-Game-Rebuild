@@ -14,10 +14,11 @@ int main(int argc, char *argv[])
 	{
 		mainGame->StartGame();
 	}
-	catch (char* errorMsg)
+	catch (const std::exception& errorMsg)
 	{
-		std::cout << errorMsg << std::endl;
-		MessageBoxA(NULL, errorMsg, "Game failed to initialize.", MB_OK | MB_ICONEXCLAMATION);
+		std::cerr << "Error: " << errorMsg.what() << std::endl;
+		MessageBoxA(NULL, "Error", "Game failed to initialize.", MB_OK | MB_ICONEXCLAMATION);
+
 		return EXIT_FAILURE;
 	}
 

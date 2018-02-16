@@ -5,9 +5,9 @@ Game::Game()
 	Init();
 }
 
-Game::Game(std::string title, int posX, int posY, int screenWidth, int screenHeight, bool isFullScreen)
+Game::Game(std::string title, int posX, int posY, int screenWidth, int screenHeight, bool isFullScreen, int fps)
 {
-	Init(title, posX, posY, screenWidth, screenHeight, isFullScreen);
+	Init(title, posX, posY, screenWidth, screenHeight, isFullScreen, fps);
 }
 
 
@@ -25,7 +25,7 @@ Game::~Game()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	Initialization
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void Game::Init(std::string title, int posX, int posY, int screenWidth, int screenHeight, bool isFullScreen)
+void Game::Init(std::string title, int posX, int posY, int screenWidth, int screenHeight, bool isFullScreen, int fps)
 {
 		// initialize SDL subsystem
 		if (SDL_Init(SDL_INIT_EVERYTHING) == 1)
@@ -62,6 +62,9 @@ void Game::Init(std::string title, int posX, int posY, int screenWidth, int scre
 				"Window Initialization Error", MB_OK | MB_ICONEXCLAMATION);
 			SDL_Quit();
 		}
+
+		_fps = 60;
+		_frameDelay = 1000 / fps;
 
 		_gameIsRunning = true;
 }
@@ -100,14 +103,25 @@ void Game::StartGame()
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void Game::GameLoop()
 {
+	// massive integer variable
+	Uint32 frameStart;
+	int frameTime;
 
 	while (_gameIsRunning)
 	{
+		frameStart = SDL_GetTicks();
+
 		HandleEvents();
 		ProcessInput();
 		FixedUpdate();
 		Update();
 		Render();
+
+		frameTime = SDL_GetTicks() - frameStart;
+
+		if (_frameDelay > frameTime) {
+			SDL_Delay(_frameDelay - frameTime);
+		}
 	}
 }
 
