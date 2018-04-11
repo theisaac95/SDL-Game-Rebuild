@@ -7,14 +7,29 @@
 #include <Windows.h>
 #include <stdint.h>
 
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+
 class Game
 {
 public:
 	Game();
-	Game(std::string title, int posX, int posY, int screenWidth, int screenHeight, bool isFullScreen, int fps);
+	Game(std::string title,
+		int posX,
+		int posY,
+		int screenWidth,
+		int screenHeight,
+		bool isFullScreen,
+		int fps);
 	~Game();
 
-	void Init(std::string title = "Framework Tester", int posX = SDL_WINDOWPOS_CENTERED, int posY = SDL_WINDOWPOS_CENTERED, int screenWidth = 640, int screenHeight = 480, bool isFullScreen = false, int fps = 60);
+	void Init(std::string title = "Framework Tester",
+		int posX = SDL_WINDOWPOS_CENTERED,
+		int posY = SDL_WINDOWPOS_CENTERED,
+		int screenWidth = SCREEN_WIDTH,
+		int screenHeight = SCREEN_HEIGHT,
+		bool isFullScreen = false,
+		int fps = 60);
 	void HandleEvents();
 	void StartGame();
 	void GameLoop();
@@ -25,6 +40,7 @@ public:
 	*	- Process Update
 	*	- Render
 	*/
+
 	void ProcessInput();
 	void FixedUpdate();
 	void Update();

@@ -5,7 +5,13 @@ Game::Game()
 	Init();
 }
 
-Game::Game(std::string title, int posX, int posY, int screenWidth, int screenHeight, bool isFullScreen, int fps)
+Game::Game(std::string title,
+	int posX,
+	int posY,
+	int screenWidth,
+	int screenHeight,
+	bool isFullScreen,
+	int fps)
 {
 	Init(title, posX, posY, screenWidth, screenHeight, isFullScreen, fps);
 }
@@ -23,54 +29,60 @@ Game::~Game()
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	Initialization
+Initialization
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void Game::Init(std::string title, int posX, int posY, int screenWidth, int screenHeight, bool isFullScreen, int fps)
+void Game::Init(std::string title,
+	int posX,
+	int posY,
+	int screenWidth,
+	int screenHeight,
+	bool isFullScreen,
+	int fps)
 {
-		// initialize SDL subsystem
-		if (SDL_Init(SDL_INIT_EVERYTHING) == 1)
-		{
-			MessageBox(NULL, "Error Creating SDL Subsystem!",
-				"SDL Subsystem Initialization Error", MB_OK | MB_ICONEXCLAMATION);
-			SDL_Quit();
-		}
+	// initialize SDL subsystem
+	if (SDL_Init(SDL_INIT_EVERYTHING) == 1)
+	{
+		MessageBox(NULL, "Error Creating SDL Subsystem!",
+			"SDL Subsystem Initialization Error", MB_OK | MB_ICONEXCLAMATION);
+		SDL_Quit();
+	}
 
-		// initialize SDL window
-		_window = SDL_CreateWindow(
-			title.c_str(),
-			posX,
-			posY,
-			screenWidth,
-			screenHeight,
-			isFullScreen == false ? 0 : SDL_WINDOW_FULLSCREEN
-		);
-		
-		if (_window == false)
-		{
-			MessageBox(NULL, "Error Creating Window!",
+	// initialize SDL window
+	_window = SDL_CreateWindow(
+		title.c_str(),
+		posX,
+		posY,
+		screenWidth,
+		screenHeight,
+		isFullScreen == false ? 0 : SDL_WINDOW_FULLSCREEN
+	);
+
+	if (_window == false)
+	{
+		MessageBox(NULL, "Error Creating Window!",
 			"Window Initialization Error", MB_OK | MB_ICONEXCLAMATION);
-			SDL_Quit();
-		}
+		SDL_Quit();
+	}
 
-		// initialize SDL renderer
-		_renderer = SDL_CreateRenderer(_window, -1, 0);
+	// initialize SDL renderer
+	_renderer = SDL_CreateRenderer(_window, -1, 0);
 
-		if (_window == false)
-		{
-			SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
-			MessageBox(NULL, "Error Creating Window!",
-				"Window Initialization Error", MB_OK | MB_ICONEXCLAMATION);
-			SDL_Quit();
-		}
+	if (_window == false)
+	{
+		SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
+		MessageBox(NULL, "Error Creating Window!",
+			"Window Initialization Error", MB_OK | MB_ICONEXCLAMATION);
+		SDL_Quit();
+	}
 
-		_fps = 60;
-		_frameDelay = 1000 / fps;
+	_fps = 60;
+	_frameDelay = 1000 / fps;
 
-		_gameIsRunning = true;
+	_gameIsRunning = true;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	SDL Event Handling
+SDL Event Handling
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void Game::HandleEvents()
 {
@@ -85,13 +97,38 @@ void Game::HandleEvents()
 		Sleep(1500);
 		exit(1);
 		break;
+		//case SDL_KEYDOWN:
+		//	std::cout << "KEY PRESSED" << std::endl;
+		//	//Select surfaces based on key press
+		//	switch (sdlEvent.key.keysym.sym)
+		//	{
+		//	case SDLK_UP:
+		//		std::cout << "Key Up" << std::endl;
+		//		break;
+
+		//	case SDLK_DOWN:
+		//		std::cout << "Key Down" << std::endl;
+		//		break;
+
+		//	case SDLK_LEFT:
+		//		std::cout << "Key Left" << std::endl;
+		//		break;
+
+		//	case SDLK_RIGHT:
+		//		std::cout << "Key Right" << std::endl;
+		//		break;
+
+		//	default:
+		//		break;
+		//	}
+		//	break;
 	default:
 		break;
 	}
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	Start Game
+Start Game
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void Game::StartGame()
 {
@@ -99,7 +136,7 @@ void Game::StartGame()
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	Game Loop
+Game Loop
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void Game::GameLoop()
 {
@@ -126,28 +163,47 @@ void Game::GameLoop()
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	Input - process input from users
+Input - process input from users
+- getting rapid input without delay
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void Game::ProcessInput()
 {
+	const Uint8* keystates = SDL_GetKeyboardState(NULL);
+
+	if (keystates[SDL_SCANCODE_UP])
+	{
+		std::cout << "KEY UP" << std::endl;
+	}
+	else if (keystates[SDL_SCANCODE_DOWN])
+	{
+		std::cout << "KEY DOWN" << std::endl;
+	}
+	else if (keystates[SDL_SCANCODE_LEFT])
+	{
+		std::cout << "KEY LEFT" << std::endl;
+	}
+	else if (keystates[SDL_SCANCODE_RIGHT])
+	{
+		std::cout << "KEY RIGHT" << std::endl;
+	}
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	Physics Update - update which mainly process the game physics
+Physics Update - update which mainly process the game physics
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void Game::FixedUpdate()
 {
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	Game Update - game data update
+Game Update - game data update
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void Game::Update()
 {
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	Render - perform rendering of the game
+Render - perform rendering of the game
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void Game::Render()
 {
