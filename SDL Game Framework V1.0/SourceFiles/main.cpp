@@ -1,18 +1,15 @@
 /*	Dependencies
 */
-#include "SDL.h";
-#include "Game.h"
+
+#include "SDL.h"
+#include "MainGame.h"
 //#include "main.h"
 
 int main(int argc, char *argv[])
 {
-	system("mode con COLS=700");
-	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
-	SendMessage(GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+	MainGame* mainGame = nullptr;
 
-	Game* mainGame = nullptr;
-
-	mainGame = new Game();
+	mainGame = new MainGame();
 
 	try
 	{

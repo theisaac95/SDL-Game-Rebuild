@@ -19,14 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="SourceFiles\DebugManager.cpp" />
+    <ClCompile Include="SourceFiles\GameWindow.cpp" />
+    <ClCompile Include="SourceFiles\main.cpp" />
+    <ClCompile Include="SourceFiles\MainGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Notes.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="SourceFiles\MainGame.h" />
+    <ClInclude Include="SourceFiles\DebugManager.h" />
+    <ClInclude Include="SourceFiles\GameWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Useful.txt" />
